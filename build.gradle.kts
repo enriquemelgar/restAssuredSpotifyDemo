@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("nu.studer.credentials") version "3.0"
 }
 
 group = "org.example"

@@ -6,8 +6,12 @@ import org.apache.logging.log4j.Logger;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -16,14 +20,21 @@ public class SpotifyGetArtistTest {
     private static final Logger logger = LogManager.getLogger(SpotifyGetArtistTest.class);
 
     @Test
-    public void getArtistsTest() {
+    public void getArtistsTest() throws IOException {
+
+        String spotifyApiKey = "src/test/config.properties";
+        FileInputStream propsInput = new FileInputStream(spotifyApiKey);
+
+        Properties prop = new Properties();
+        prop.load(propsInput);
+
 
         // Map<String, String> params = new HashMap<>()["ids", "2w9zwq3AktTeYYMuhMjju8"]
         logger.info("Get Artists Test");
         Response response = RestAssured.given()
                 .param("ids", "1Li0eIWeMeWcOOWpImcG9H")
                 .header("X-RapidAPI-Key",
-                        "8a1d5b91f6mshdfa0c46b1561988p116a45jsnfb72c7ad0d0e")
+                  prop.getProperty("X_Spotify_RapidApi_Key"))
                 .header("X-RapidAPI-Host", "spotify23.p.rapidapi.com")
                 .get("https://spotify23.p.rapidapi.com/artists/")
                 .then()
